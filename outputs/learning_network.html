@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 700px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "rgb(52, 202, 100)", "font": {"color": "#333333"}, "id": "Ch1", "label": "Ch1", "shape": "dot", "size": 65.11070756522383, "title": "Ch1\nAvg Score: 79.5%\nStruggle Index: 0.90"}, {"color": "rgb(79, 175, 100)", "font": {"color": "#333333"}, "id": "Ch2", "label": "Ch2", "shape": "dot", "size": 99.47315488284751, "title": "Ch2\nAvg Score: 68.7%\nStruggle Index: 1.59"}, {"color": "rgb(92, 162, 100)", "font": {"color": "#333333"}, "id": "Ch3", "label": "Ch3", "shape": "dot", "size": 113.88017815223482, "title": "Ch3\nAvg Score: 63.9%\nStruggle Index: 1.88"}, {"color": "rgb(99, 155, 100)", "font": {"color": "#333333"}, "id": "Ch4", "label": "Ch4", "shape": "dot", "size": 126.37267370401379, "title": "Ch4\nAvg Score: 60.9%\nStruggle Index: 2.13"}, {"color": "rgb(92, 162, 100)", "font": {"color": "#333333"}, "id": "Ch5", "label": "Ch5", "shape": "dot", "size": 101.6116106390984, "title": "Ch5\nAvg Score: 63.6%\nStruggle Index: 1.63"}, {"color": "rgb(101, 153, 100)", "font": {"color": "#333333"}, "id": "Ch6", "label": "Ch6", "shape": "dot", "size": 119.3420317048429, "title": "Ch6\nAvg Score: 60.1%\nStruggle Index: 1.99"}, {"color": "rgb(104, 150, 100)", "font": {"color": "#333333"}, "id": "Ch7", "label": "Ch7", "shape": "dot", "size": 109.48024762927264, "title": "Ch7\nAvg Score: 58.9%\nStruggle Index: 1.79"}, {"color": "rgb(102, 153, 100)", "font": {"color": "#333333"}, "id": "Ch8", "label": "Ch8", "shape": "dot", "size": 112.11679923276593, "title": "Ch8\nAvg Score: 60.0%\nStruggle Index: 1.84"}, {"color": "rgb(106, 148, 100)", "font": {"color": "#333333"}, "id": "Ch9", "label": "Ch9", "shape": "dot", "size": 121.47557287844147, "title": "Ch9\nAvg Score: 58.2%\nStruggle Index: 2.03"}, {"color": "rgb(111, 143, 100)", "font": {"color": "#333333"}, "id": "Ch10", "label": "Ch10", "shape": "dot", "size": 117.97339517858047, "title": "Ch10\nAvg Score: 56.2%\nStruggle Index: 1.96"}, {"color": "rgb(131, 123, 100)", "font": {"color": "#333333"}, "id": "Ch11", "label": "Ch11", "shape": "dot", "size": 137.01065138067077, "title": "Ch11\nAvg Score: 48.5%\nStruggle Index: 2.34"}, {"color": "rgb(119, 135, 100)", "font": {"color": "#333333"}, "id": "Ch12", "label": "Ch12", "shape": "dot", "size": 127.63159187654037, "title": "Ch12\nAvg Score: 53.0%\nStruggle Index: 2.15"}, {"color": "rgb(123, 131, 100)", "font": {"color": "#333333"}, "id": "Ch13", "label": "Ch13", "shape": "dot", "size": 121.50705945673018, "title": "Ch13\nAvg Score: 51.6%\nStruggle Index: 2.03"}, {"color": "rgb(134, 120, 100)", "font": {"color": "#333333"}, "id": "Ch14", "label": "Ch14", "shape": "dot", "size": 137.70189949460422, "title": "Ch14\nAvg Score: 47.1%\nStruggle Index: 2.35"}, {"color": "rgb(130, 124, 100)", "font": {"color": "#333333"}, "id": "Ch15", "label": "Ch15", "shape": "dot", "size": 129.41963713249766, "title": "Ch15\nAvg Score: 49.0%\nStruggle Index: 2.19"}, {"color": "rgb(156, 98, 100)", "font": {"color": "#333333"}, "id": "Ch16", "label": "Ch16", "shape": "dot", "size": 143.04433705343942, "title": "Ch16\nAvg Score: 38.8%\nStruggle Index: 2.46"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Cost", "label": "Cost", "shape": "dot", "size": 30, "title": "Cost\n(Psychological Construct)"}, {"color": "#27ae60", "font": {"color": "#333333"}, "id": "Expectancy", "label": "Expectancy", "shape": "dot", "size": 30, "title": "Expectancy\n(Psychological Construct)"}, {"color": "#3498db", "font": {"color": "#333333"}, "id": "Intrinsic Value", "label": "Intrinsic Value", "shape": "dot", "size": 30, "title": "Intrinsic Value\n(Psychological Construct)"}, {"color": "#f39c12", "font": {"color": "#333333"}, "id": "Utility Value", "label": "Utility Value", "shape": "dot", "size": 30, "title": "Utility Value\n(Psychological Construct)"}]);
+                  edges = new vis.DataSet([{"color": "#95a5a6", "from": "Ch1", "to": "Ch2", "value": 1.95024540178658}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch3", "value": 1.7231548988265535}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch4", "value": 1.34719708423391}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch5", "value": 1.2910033877281972}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch6", "value": 1.4090699903945336}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch7", "value": 1.358671272237891}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch8", "value": 1.2841448055611107}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch9", "value": 1.3454717789014556}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch10", "value": 1.5087526839254266}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch11", "value": 1.4249721466761087}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch12", "value": 1.2238433246449607}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch13", "value": 1.2188495712575882}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch14", "value": 1.2457850117437244}, {"color": "#95a5a6", "from": "Ch1", "to": "Ch15", "value": 1.2998256058492463}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch3", "value": 2.3975000612325994}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch4", "value": 2.0280063658354877}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch5", "value": 1.7755653292707971}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch6", "value": 2.025239543689022}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch7", "value": 1.898131952954849}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch8", "value": 1.8210426317322685}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch9", "value": 1.730788180530363}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch10", "value": 1.9961449512249292}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch11", "value": 1.6973441523480557}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch12", "value": 1.5640653736517103}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch13", "value": 1.6190785730040287}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch14", "value": 1.8303836211027031}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch15", "value": 1.5224295464186752}, {"color": "#95a5a6", "from": "Ch2", "to": "Ch16", "value": 1.068614633688123}, {"color": "#e74c3c", "from": "Ch2", "to": "Cost", "value": 0.6390496848360306}, {"color": "#27ae60", "from": "Ch2", "to": "Expectancy", "value": 0.8381957792769389}, {"color": "#f39c12", "from": "Ch2", "to": "Utility Value", "value": 0.7992710260108642}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch4", "value": 2.295271675160737}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch5", "value": 1.9967075652005393}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch6", "value": 2.2649493235734894}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch7", "value": 1.8382869652487606}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch8", "value": 2.0541636465215944}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch9", "value": 1.9308098449326079}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch10", "value": 1.9378254121165421}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch11", "value": 1.9863206069633734}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch12", "value": 1.8300966025813517}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch13", "value": 1.4582486952031157}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch14", "value": 1.9470839542043412}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch15", "value": 1.8506793542526387}, {"color": "#95a5a6", "from": "Ch3", "to": "Ch16", "value": 1.226133012928464}, {"color": "#27ae60", "from": "Ch3", "to": "Expectancy", "value": 0.7956204314140101}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch5", "value": 2.0984365988747173}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch6", "value": 2.3107075108479886}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch7", "value": 1.9717514375384257}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch8", "value": 2.065351469786517}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch9", "value": 2.0353757437663935}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch10", "value": 1.8647517983025206}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch11", "value": 1.751358735235549}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch12", "value": 1.7893943345557854}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch13", "value": 1.4720111685421173}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch14", "value": 2.0266969917148194}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch15", "value": 1.869215013405487}, {"color": "#95a5a6", "from": "Ch4", "to": "Ch16", "value": 1.5916134773741115}, {"color": "#27ae60", "from": "Ch4", "to": "Expectancy", "value": 0.6594085113001116}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch6", "value": 2.3719037137887793}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch7", "value": 1.9422726416833564}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch8", "value": 2.140745362030269}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch9", "value": 2.0787444416564647}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch10", "value": 1.8527892714205794}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch11", "value": 1.9552147524720325}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch12", "value": 1.968565863512545}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch13", "value": 1.2391835416532406}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch14", "value": 1.8681914257609105}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch15", "value": 1.3760781552860721}, {"color": "#95a5a6", "from": "Ch5", "to": "Ch16", "value": 1.5558139349270335}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch7", "value": 2.0901936352108357}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch8", "value": 2.3651435210837914}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch9", "value": 2.266427606049259}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch10", "value": 2.0662816052597797}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch11", "value": 2.1105551417975277}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch12", "value": 2.154419786371313}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch13", "value": 1.4391732315430594}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch14", "value": 2.1581431164670084}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch15", "value": 2.2437162213996515}, {"color": "#95a5a6", "from": "Ch6", "to": "Ch16", "value": 2.046818931541104}, {"color": "#95a5a6", "from": "Ch7", "to": "Ch8", "value": 2.188642057245475}, {"color": "#95a5a6", "from": "Ch7", "to": "Ch9", "value": 2.35917316963046}, {"color": "#95a5a6", "from": "Ch7", "to": "Ch10", "value": 2.2939017748287283}, {"color": "#95a5a6", "from": "Ch7", "to": "Ch11", "value": 2.3199575552218956}, {"color": "#95a5a6", "from": "Ch7", "to": "Ch12", "value": 2.2404366794045596}, {"color": "#95a5a6", "from": "Ch7", "to": "Ch13", "value": 1.6843987450115128}, {"color": "#95a5a6", "from": "Ch7", "to": "Ch14", "value": 2.25992767365018}, {"color": "#95a5a6", "from": "Ch7", "to": "Ch15", "value": 2.3171526194375787}, {"color": "#95a5a6", "from": "Ch7", "to": "Ch16", "value": 1.7903513972761511}, {"color": "#95a5a6", "from": "Ch8", "to": "Ch9", "value": 2.4221541742317045}, {"color": "#95a5a6", "from": "Ch8", "to": "Ch10", "value": 2.2033812561744757}, {"color": "#95a5a6", "from": "Ch8", "to": "Ch11", "value": 2.258674907162936}, {"color": "#95a5a6", "from": "Ch8", "to": "Ch12", "value": 2.263112739257064}, {"color": "#95a5a6", "from": "Ch8", "to": "Ch13", "value": 1.6485520759621788}, {"color": "#95a5a6", "from": "Ch8", "to": "Ch14", "value": 2.451978950796562}, {"color": "#95a5a6", "from": "Ch8", "to": "Ch15", "value": 2.152218335568587}, {"color": "#95a5a6", "from": "Ch8", "to": "Ch16", "value": 2.1797265990189905}, {"color": "#95a5a6", "from": "Ch9", "to": "Ch10", "value": 2.322799091106808}, {"color": "#95a5a6", "from": "Ch9", "to": "Ch11", "value": 2.477559569805406}, {"color": "#95a5a6", "from": "Ch9", "to": "Ch12", "value": 2.405452265868033}, {"color": "#95a5a6", "from": "Ch9", "to": "Ch13", "value": 1.7486604982503666}, {"color": "#95a5a6", "from": "Ch9", "to": "Ch14", "value": 2.470924480194695}, {"color": "#95a5a6", "from": "Ch9", "to": "Ch15", "value": 2.329755486903185}, {"color": "#95a5a6", "from": "Ch9", "to": "Ch16", "value": 2.1113691791088747}, {"color": "#95a5a6", "from": "Ch10", "to": "Ch11", "value": 2.282064182708303}, {"color": "#95a5a6", "from": "Ch10", "to": "Ch12", "value": 2.19186710739297}, {"color": "#95a5a6", "from": "Ch10", "to": "Ch13", "value": 2.025172557684255}, {"color": "#95a5a6", "from": "Ch10", "to": "Ch14", "value": 2.464495887407148}, {"color": "#95a5a6", "from": "Ch10", "to": "Ch15", "value": 2.6166636874407017}, {"color": "#95a5a6", "from": "Ch10", "to": "Ch16", "value": 2.0332474376858443}, {"color": "#95a5a6", "from": "Ch11", "to": "Ch12", "value": 2.6040628304850655}, {"color": "#95a5a6", "from": "Ch11", "to": "Ch13", "value": 2.214397416629743}, {"color": "#95a5a6", "from": "Ch11", "to": "Ch14", "value": 2.5612409121953084}, {"color": "#95a5a6", "from": "Ch11", "to": "Ch15", "value": 2.7482907493383575}, {"color": "#95a5a6", "from": "Ch11", "to": "Ch16", "value": 2.2797065086182293}, {"color": "#95a5a6", "from": "Ch12", "to": "Ch13", "value": 1.9758168169535208}, {"color": "#95a5a6", "from": "Ch12", "to": "Ch14", "value": 2.5634136003020247}, {"color": "#95a5a6", "from": "Ch12", "to": "Ch15", "value": 2.6405930813089915}, {"color": "#95a5a6", "from": "Ch12", "to": "Ch16", "value": 2.270941716667682}, {"color": "#e74c3c", "from": "Ch12", "to": "Cost", "value": 0.6785352411659502}, {"color": "#95a5a6", "from": "Ch13", "to": "Ch14", "value": 2.6683426609566587}, {"color": "#95a5a6", "from": "Ch13", "to": "Ch15", "value": 2.6073515893490367}, {"color": "#95a5a6", "from": "Ch13", "to": "Ch16", "value": 2.294428623584837}, {"color": "#95a5a6", "from": "Ch14", "to": "Ch15", "value": 2.343225467642786}, {"color": "#95a5a6", "from": "Ch14", "to": "Ch16", "value": 2.3994122904008823}, {"color": "#95a5a6", "from": "Ch15", "to": "Ch16", "value": 2.5030008014673286}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -3000,
+            "springConstant": 0.001,
+            "springLength": 200
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

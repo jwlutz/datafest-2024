@@ -1,0 +1,70 @@
+# Data files (too large for GitHub)
+Data/Full Data/
+Data/Random Sample of Data Files/
+*.csv
+!requirements.txt
+
+# Documentation PDFs
+*.pdf
+*.docx
+*.mp4
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Virtual environments
+venv/
+env/
+.env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# R files (keeping Python only)
+*.R
+*.Rmd
+*.RData
+*.rds
+.Rhistory
+.Rproj.user/
+
+# Old git repos
+WarrenA.Code/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Claude Code internal
+.claude/
